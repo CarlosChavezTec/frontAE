@@ -13,35 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Checkout del código
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Paso 2: Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
-      # Paso 3: Instalar dependencias
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # Paso 4: Ejecutar Lint
       - name: Run lint
         run: npm run lint
         continue-on-error: true
 
-      # Paso 5: Ejecutar pruebas
       - name: Run tests
         run: npm test -- --ci --runInBand --coverage
         continue-on-error: true
 
-      # Paso 6: Build de la aplicación
       - name: Build the app
         run: npm run build
 
-      # Paso 7: Deploy en GitHub Pages
+      - name: Verify build output
+        run: ls -la ./dist
+
       - name: Deploy on GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
